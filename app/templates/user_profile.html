@@ -33,321 +33,283 @@
                         {%endif%}
                     </div>
 
-                <!--Admin dashboard button-->
-                {% if general_admin %}
-                <a href="{% url 'admin_dashboard' %}"><button class="btn btn-primary">Admin Dashboard</button></a>
+                    <!--Add user form Modal -->
+                    <div class="modal fade" id="user_profile" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{% url 'user_profile' %}" method="post" enctype="multipart/form-data">
+                                        {%csrf_token%}
+                                        {{profile_form}}
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary" name="add_profile">Save
+                                        changes</button>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Update profile form Modal -->
+                    <div class="modal fade" id="update_profile" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{% url 'user_profile' %}" method="post" enctype="multipart/form-data">
+                                        {%csrf_token%}
+                                        {{profile_form.bio.label}} {{profile_form.bio}}
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary" name='update_profile'>Save
+                                        changes</button>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mt-3 user_posts p-4">
+            <h5 class="bold">Your Posts</h5>
+            <h5 id="kiko">Kiko</h5>
+            <ul class="list-group list-group-flush" style="overflow-y: scroll;">
+                {% if posts %}
+                {% for post in posts %}
+                <li>
+                    <div class="card d-flex flex-row align-items-center mb-4">
+                        <div class="card-image col-md-3">
+                            <img src="{{post.image_path.url}}" alt="" style="width:100%;">
+                        </div>
+                        <div class="card-title col-md-5 bold">
+                            {{post.title}}
+                        </div>
+                        <div class="card-text col-md-4">
+                            <h5>{{post.date_created|date}}</h5>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+                {%else%}
+                <h4>No posts created yet</h4>
                 {%endif%}
-            </div>
-
-            <!--Add user form Modal -->
-            <div class="modal fade" id="user_profile" tabindex="-1" role="dialog"
-                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="{% url 'user_profile' %}" method="post" enctype="multipart/form-data">
-                                {%csrf_token%}
-                                {{profile_form}}
-
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" name="add_profile">Save
-                                changes</button>
-                        </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <!--Update profile form Modal -->
-            <div class="modal fade" id="update_profile" tabindex="-1" role="dialog"
-                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="{% url 'user_profile' %}" method="post" enctype="multipart/form-data">
-                                {%csrf_token%}
-                                {{profile_form.bio.label}} {{profile_form.bio}}
-
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" name='update_profile'>Save
-                                changes</button>
-                        </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+            </ul>
         </div>
     </div>
-</div>
-<div class="card mt-3 user_posts p-4">
-    <h5 class="bold">Your Posts</h5>
-    <h5 id="kiko">Kiko</h5>
-    <ul class="list-group list-group-flush" style="overflow-y: scroll;">
-        {% if posts %}
-        {% for post in posts %}
-        <li>
-            <div class="card d-flex flex-row align-items-center mb-4">
-                <div class="card-image col-md-3">
-                    <img src="{{post.image_path.url}}" alt="" style="width:100%;">
-                </div>
-                <div class="card-title col-md-5 bold">
-                    {{post.title}}
-                </div>
-                <div class="card-text col-md-4">
-                    <h5>{{post.date_created|date}}</h5>
-                </div>
-            </div>
-        </li>
-        {% endfor %}
-        {%else%}
-        <h4>No posts created yet</h4>
+    <div class="col-md-8">
+        {% if messages %}
+        <div class="alert">
+            {% for message in messages%}
+            <h3>{{message}}</h3>
+        </div>
+        {%endfor%}
         {%endif%}
-    </ul>
-</div>
-</div>
-<div class="col-md-8">
-    {% if messages %}
-    <div class="alert">
-        {% for message in messages%}
-        <h3>{{message}}</h3>
-    </div>
-    {%endfor%}
-    {%endif%}
-    <div class="card mb-3 contact_container">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-sm-3">
-                    <h6 class="m-0">Full Name</h6>
-                </div>
-                <div class="col-sm-9 text-secondary">
-                    {{user.first_name}} {{user.last_name}}
-                </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-sm-3">
-                    <h6 class="m-0">Email</h6>
-                </div>
-                <div class="col-sm-9 text-secondary">
-                    {{request.user.email}}
-                </div>
-            </div>
-            <hr>
-            <div class="row">
-                <div class="col-sm-3">
-                    <h6 class="m-0">Groups</h6>
-                </div>
-                <div class="col-sm-9 text-secondary">
-                    {% if user_profile.group %}
-                    {{user_profile.group.name}}
-                    {%else%}
-                    <h5 class="bold grey">No Groups</h5>
-                    {% endif %}
-
-                </div>
-            </div>
-            <hr>
-        </div>
-
-    </div>
-    <div class="row gutters-sm">
-        <div class="col-sm-6 mb-3 participation">
-            <div class="card h-100">
-                <div class="card-body">
-
-                    <ul class="nav nav-tabs">
-                        <li class="active"><a class="bold" data-toggle="pill" href="#collaborations">Collaborations</a>
-                        </li>
-                        <li><a class="bold" data-toggle="pill" href="#closed_projects">Closed Projects</a></li>
-                    </ul>
-                    <div class="tab-content" id="archives">
-                        <div class="tab-pane fade in active" id="collaborations" role="tabpanel"
-                            aria-labelledby="home-tab">
-                            <!--collaborations here-->
-                            {% if collaborations %}
-                            {% for collab in collaborations %}
-                            <div class="card">
-                                <div class="card-body d-flex flex-row align-items-center">
-                                    <div class="card-image col-md-3">
-                                        <img src="{{collab.image1_path.url}}" alt="" width="50px">
-                                    </div>
-                                    <div class="card-title col-md-4 bold">
-                                        {{collab.title}}
-                                    </div>
-                                    <div class="card-text col-md-5 bold">
-                                        {{collab.description|safe}}
-                                    </div>
-                                </div>
-                                <div class="card-footer col-md-12 d-flex flex-row flex-wrap">
-                                    <h5>{{collab.date_created|date}}</h5>
-                                    <h5>{{collab.collaborators.count}}</h5>
-                                    <h5>Status {% if collab.is_open %} Open {%else%} Closed {%endif%}</h5>
-                                </div>
-                            </div>
-                            {% endfor %}
-                            {%else%}
-                            <h5 class="bold">No Collaborations Here</h5>
-                            {%endif%}
-                        </div>
-                        <div class="tab-pane fade" id="closed_projects" role="tabpanel"
-                            aria-labelledby="closed_projects-tab">
-                            <!--collaborations here-->
-                            {% if closed_projects %}
-                            {% for project in closed_projects %}
-                            <div class="card">
-                                <div class="card-body d-flex flex-row align-items-center">
-                                    <div class="card-image col-md-3">
-                                        <img src="{{project.image1_path.url}}" alt="" width="50px">
-                                    </div>
-                                    <div class="card-title col-md-4 bold">
-                                        {{project.title}}
-                                    </div>
-                                    <div class="card-text col-md-5 bold">
-                                        {{project.description|safe}}
-                                    </div>
-                                </div>
-                                <div class="card-footer col-md-12 d-flex flex-row flex-wrap">
-                                    <h5>{{project.date_created|date}}</h5>
-                                    <h5>{{project.collaborators.count}}</h5>___<br>
-                                    <h5 class="bold">Status {% if project.is_open %} Open {%else%} Closed {%endif%}</h5>
-                                </div>
-                            </div>
-                            {% endfor %}
-                            {%else%}
-                            <h5 class="bold">No Closed Projects Here</h5>
-                            {%endif%}
-                        </div>
+        <div class="card mb-3 contact_container">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h6 class="m-0">Full Name</h6>
                     </div>
-
-
+                    <div class="col-sm-9 text-secondary">
+                        {{user.first_name}} {{user.last_name}}
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-sm-6 mb-3 project_details">
-            <div class="card h-100">
-                <div class="card-body">
-                    <!--Projects details here/ Requests for collaboration-->
-                    <div class="col-md-12 p-0">
-                        <ul class="nav nav-tabs">
-                            <li class="active"><a class="bold" data-toggle="pill" href="#open_projects">Open
-                                    Projects</a></li>
-                            <li>
-                                <a class="bold" data-toggle="pill" href="#requests">
-                                    <div
-                                        style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
-                                        Requests{% if requests.count >= 9 %}
-                                        <div
-                                            style="background-color: red; color: white; font-size: 1em; font-weight: bolder; text-transform: uppercase;width:20px; height: 20px; border-radius: 50%; display: flex; justify-content: center; align-items: center; padding-top: 10px;">
-                                            <p>
-                                                9+
-                                            </p>
-                                        </div>
-                                        {% elif requests.count == 0 %}
-                                        {%else%}
-                                        <div
-                                            style="background-color: red; font-weight: bolder; text-transform: uppercase;width:20px; height: 20px; border-radius: 50%; display: flex; justify-content: center; align-items: center;  padding-top: 10px;">
-                                            <p style="color: white; font-size: 1.2em;"> {{requests.count}} </p>
-                                        </div>
-                                        {%endif%}
-                                    </div>
-                                </a>
-                            </li>
-                        </ul>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h6 class="m-0">Email</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        {{request.user.email}}
+                    </div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h6 class="m-0">Groups</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        {% if user_profile.group %}
+                        {{user_profile.group.name}}
+                        {%else%}
+                        <h5 class="bold grey">No Groups</h5>
+                        {% endif %}
 
-                        <div class="tab-content content">
-                            <div id="open_projects" class="tab-pane fade in active p-0 m-0">
-                                {% if projects %}
-                                {% for project in projects %}
-                                <div class="card row mb-4">
-                                    <div class="card-body d-flex flex-row align-items-center flex-wrap">
+                    </div>
+                </div>
+                <hr>
+            </div>
+
+        </div>
+        <div class="row gutters-sm">
+            <div class="col-sm-6 mb-3 participation">
+                <div class="card h-100">
+                    <div class="card-body">
+
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a class="bold" data-toggle="pill"
+                                    href="#collaborations">Collaborations</a></li>
+                            <li><a class="bold" data-toggle="pill" href="#closed_projects">Closed Projects</a></li>
+                        </ul>
+                        <div class="tab-content" id="archives">
+                            <div class="tab-pane fade in active" id="collaborations" role="tabpanel"
+                                aria-labelledby="home-tab">
+                                <!--collaborations here-->
+                                {% if collaborations %}
+                                {% for collab in collaborations %}
+                                <div class="card">
+                                    <div class="card-body d-flex flex-row align-items-center">
+                                        <div class="card-image col-md-3">
+                                            <img src="{{collab.image1_path.url}}" alt="" width="50px">
+                                        </div>
+                                        <div class="card-title col-md-4 bold">
+                                            {{collab.title}}
+                                        </div>
+                                        <div class="card-text col-md-5 bold">
+                                            {{collab.description|safe}}
+                                        </div>
+                                    </div>
+                                    <div class="card-footer col-md-12 d-flex flex-row flex-wrap">
+                                        <h5>{{collab.date_created|date}}</h5>
+                                        <h5>{{collab.collaborators.count}}</h5>
+                                        <h5>Status {% if collab.is_open %} Open {%else%} Closed {%endif%}</h5>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                {%else%}
+                                <h5 class="bold">No Collaborations Here</h5>
+                                {%endif%}
+                            </div>
+                            <div class="tab-pane fade" id="closed_projects" role="tabpanel"
+                                aria-labelledby="closed_projects-tab">
+                                <!--collaborations here-->
+                                {% if closed_projects %}
+                                {% for project in closed_projects %}
+                                <div class="card">
+                                    <div class="card-body d-flex flex-row align-items-center">
                                         <div class="card-image col-md-3">
                                             <img src="{{project.image1_path.url}}" alt="" width="50px">
                                         </div>
                                         <div class="card-title col-md-4 bold">
                                             {{project.title}}
                                         </div>
-                                        <div class="card-text col-md-5">
-                                            {{project.description|safe|truncatechars:50}}
+                                        <div class="card-text col-md-5 bold">
+                                            {{project.description|safe}}
                                         </div>
                                     </div>
                                     <div class="card-footer col-md-12 d-flex flex-row flex-wrap">
-<<<<<<< HEAD
-                                        <h6 class="bold m-2">{{project.date_created|date}}</h6>|<br>
-                                        <h6 class="bold m-2">Collaborators {{project.collaborators.count}}</h6>|<br>
-                                        <h6 class="bold m-2">Interests {{project.interests.count}}</h6>|<br>
-                                        <h6 class="bold m-2">Open until {{project.validity|date}}</h6><br>
-                                        <form id="close_project_form" method="post" class="ml-auto">
-                                            {%csrf_token%}
-                                            <input type="hidden" name="project_id" value="{{project.id}}">
-                                            <button id="close_proj" type="submit" name='close_proj'
-                                                class="pt-0 pb-0 ml-auto btn btn-danger">Close</button>
-                                        </form>
-=======
                                         <h5>{{project.date_created|date}}</h5>
                                         <h5>{{project.collaborators.count}}</h5>___<br>
                                         <h5 class="bold">Status {% if project.is_open %} Open {%else%} Closed {%endif%}
                                         </h5>
->>>>>>> a5041f9d75170c0f7bdd277ffbd703659e502502
                                     </div>
                                 </div>
                                 {% endfor %}
                                 {%else%}
-                                <h5 class="bold">No Projects Here</h5>
+                                <h5 class="bold">No Closed Projects Here</h5>
                                 {%endif%}
                             </div>
+                        </div>
 
-                            <div id="requests" class="tab-pane fade">
-                                {% if requests %}
-                                {% for requester in requests %}
-                                <div class="card">
-                                    <div class="card-body d-flex flex-row align-items-center">
-                                        <div class="card-image col-md-3">
-                                            <img src="{{requester.photo_path.url}}" alt="" width="50px">
-                                        </div>
-                                        <div class="card-title col-md-4 bold"
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 mb-3 project_details">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <!--Projects details here/ Requests for collaboration-->
+                        <div class="col-md-12 p-0">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a class="bold" data-toggle="pill" href="#open_projects">Open
+                                        Projects</a></li>
+                                <li>
+                                    <a class="bold" data-toggle="pill" href="#requests">
+                                        <div
                                             style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
-                                            <div>
-                                                {{requester.user.first_name}} {{requester.user.last_name}}
-                                                {% if requester.user.is_active %}
-                                            </div>
+                                            Requests{% if requests.count >= 9 %}
                                             <div
-                                                style="width: 10px; height: 10px; background-color: green; border-radius: 50%;">
+                                                style="background-color: red; color: white; font-size: 1em; font-weight: bolder; text-transform: uppercase;width:20px; height: 20px; border-radius: 50%; display: flex; justify-content: center; align-items: center; padding-top: 10px;">
+                                                <p>
+                                                    9+
+                                                </p>
                                             </div>
+                                            {% elif requests.count == 0 %}
                                             {%else%}
                                             <div
-                                                style="width: 10px; height: 10px; background-color: red; border-radius: 50%;">
+                                                style="background-color: red; font-weight: bolder; text-transform: uppercase;width:20px; height: 20px; border-radius: 50%; display: flex; justify-content: center; align-items: center;  padding-top: 10px;">
+                                                <p style="color: white; font-size: 1.2em;"> {{requests.count}} </p>
                                             </div>
                                             {%endif%}
                                         </div>
-                                        <div class="bold">
-                                            <form action="{% url 'user_profile' %}" method="POST"
-                                                id="view_request_form">
-                                                {%csrf_token%}
-                                                <input type="hidden" name="user_prof_id" value="{{requester.id}}">
-                                                <!--Find a userprofile idea interests and make them collaborators///trigger button-->
-                                                <div>
-<<<<<<< HEAD
+                                    </a>
+                                </li>
+                            </ul>
 
-                                                    <button type="button" name="view_requests" data-toggle="modal"
-                                                        data-target="#interests_form">view</button>
-                                                </div>
+                            <div class="tab-content content">
+                                <div id="open_projects" class="tab-pane fade in active p-0 m-0">
+                                    {% if projects %}
+                                    {% for project in projects %}
+                                    <div class="card row mb-4">
+                                        <div class="card-body d-flex flex-row align-items-center flex-wrap">
+                                            <div class="card-image col-md-3">
+                                                <img src="{{project.image1_path.url}}" alt="" width="50px">
+                                            </div>
+                                            <div class="card-title col-md-4 bold">
+                                                {{project.title}}
+                                            </div>
+                                            <div class="card-text col-md-5">
+                                                {{project.description|safe|truncatechars:50}}
+                                            </div>
+                                        </div>
+                                        <div class="card-footer col-md-12 d-flex flex-row flex-wrap">
+                                            <h6 class="bold m-2">{{project.date_created|date}}</h6>|<br>
+                                            <h6 class="bold m-2">Collaborators {{project.collaborators.count}}</h6>|<br>
+                                            <h6 class="bold m-2">Interests {{project.interests.count}}</h6>|<br>
+                                            <h6 class="bold m-2">Open until {{project.validity|date}}</h6><br>
+                                            <form id="close_project_form" method="post" class="ml-auto">
+                                                {%csrf_token%}
+                                                <input type="hidden" name="project_id" value="{{project.id}}">
+                                                <button id="close_proj" type="submit" name='close_proj'
+                                                    class="pt-0 pb-0 ml-auto btn btn-danger">Close</button>
                                             </form>
-=======
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                    {%else%}
+                                    <h5 class="bold">No Projects Here</h5>
+                                    {%endif%}
+                                </div>
+
+                                <div id="requests" class="tab-pane fade">
+                                    {% if requests %}
+                                    {% for requester in requests %}
+                                    <div class="card">
+                                        <div class="card-body d-flex flex-row align-items-center">
+                                            <div class="card-image col-md-3">
+                                                <img src="{{requester.photo_path.url}}" alt="" width="50px">
+                                            </div>
+                                            <div class="card-title col-md-4 bold"
+                                                style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
+                                                <div>
                                                     {{requester.user.first_name}} {{requester.user.last_name}}
                                                     {% if requester.user.is_active %}
                                                 </div>
@@ -376,81 +338,76 @@
                                         </div>
                                         <div class="card-footer col-md-12 d-flex flex-row flex-wrap">
                                             <h5>Joined {{requester.user.date_joined|timesince}}</h5>
->>>>>>> a5041f9d75170c0f7bdd277ffbd703659e502502
                                         </div>
                                     </div>
-                                    <div class="card-footer col-md-12 d-flex flex-row flex-wrap">
-                                        <h5>Joined {{requester.user.date_joined|timesince}}</h5>
-                                    </div>
-                                </div>
 
-                                {% endfor %}
-                                {%else%}
-                                <h5 class="bold">No Sent Requests</h5>
-                                {%endif%}
+                                    {% endfor %}
+                                    {%else%}
+                                    <h5 class="bold">No Sent Requests</h5>
+                                    {%endif%}
 
-                                <!--Find a userprofile idea interests and make them collaborators/// modal form-->
-                                <div class="modal fade" id="interests_form" tabindex="-1" role="dialog"
-                                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalCenterTitle">
-                                                    <!--modal title for user interests-->
+                                    <!--Find a userprofile idea interests and make them collaborators/// modal form-->
+                                    <div class="modal fade" id="interests_form" tabindex="-1" role="dialog"
+                                        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalCenterTitle">
+                                                        <!--modal title for user interests-->
 
-                                                    <div class="card-title col-md-4 bold"
-                                                        style="display: flex; flex-direction: row;">
-                                                        <div>
-                                                            {{requester.user.first_name}}
-                                                            {{requester.user.last_name}}
-                                                            {% if requester.user.is_active %}
+                                                        <div class="card-title col-md-4 bold"
+                                                            style="display: flex; flex-direction: row;">
+                                                            <div>
+                                                                {{requester.user.first_name}}
+                                                                {{requester.user.last_name}}
+                                                                {% if requester.user.is_active %}
+                                                            </div>
+                                                            <div
+                                                                style="width: 10px; height: 10px; background-color: green; border-radius: 50%;">
+                                                            </div>
+                                                            {%else%}
+                                                            <div
+                                                                style="width: 10px; height: 10px; background-color: red; border-radius: 50%;">
+                                                            </div>
+                                                            {%endif%}
                                                         </div>
-                                                        <div
-                                                            style="width: 10px; height: 10px; background-color: green; border-radius: 50%;">
-                                                        </div>
-                                                        {%else%}
-                                                        <div
-                                                            style="width: 10px; height: 10px; background-color: red; border-radius: 50%;">
-                                                        </div>
-                                                        {%endif%}
-                                                    </div>
-                                                </h5>
-                                                <button type="button" class="close" data-dismiss="modal"
-                                                    aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form action="{% url 'user_profile' %}" method="post"
-                                                    enctype="multipart/form-data">
-                                                    {%csrf_token%}
+                                                    </h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="{% url 'user_profile' %}" method="post"
+                                                        enctype="multipart/form-data">
+                                                        {%csrf_token%}
 
-                                                    <!--more contents here-->
+                                                        <!--more contents here-->
 
+                                                </div>
+                                                <div class="modal-footer d-flex flex-row">
+                                                    <button type="button" class="btn btn-default mr-auto"
+                                                        data-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-warning bold btn-sm-6"
+                                                        name="decline">Decline</button>
+                                                    <button type="submit" class="btn btn-success bold"
+                                                        name="decline">Approve</button>
+                                                    <button type="submit" class="btn btn-success bold"
+                                                        name="submit_changes">Submit Changes</button>
+                                                </div>
+                                                </form>
                                             </div>
-                                            <div class="modal-footer d-flex flex-row">
-                                                <button type="button" class="btn btn-default mr-auto"
-                                                    data-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-warning bold btn-sm-6"
-                                                    name="decline">Decline</button>
-                                                <button type="submit" class="btn btn-success bold"
-                                                    name="decline">Approve</button>
-                                                <button type="submit" class="btn btn-success bold"
-                                                    name="submit_changes">Submit Changes</button>
-                                            </div>
-                                            </form>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
+                </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 {%endblock%}
 {% block scripts %}
